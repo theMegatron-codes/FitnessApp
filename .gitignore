@@ -1,0 +1,37 @@
+# Build folders
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code settings (ignore if only using Visual Studio)
+.vscode/
+
+# Rider IDE settings
+.idea/
+
+# Visual Studio temporary files
+.vs/
+
+# ASP.NET Core config files that contain secrets
+appsettings.*.json
+
+# Publish output
+publish/
+
+# NPM packages (if any)
+node_modules/
+
+# Logs
+*.log
+
+# Backup files
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
