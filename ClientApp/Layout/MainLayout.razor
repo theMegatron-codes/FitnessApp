@@ -1,6 +1,18 @@
 ﻿@inherits LayoutComponentBase
 
-<!-- Minimal layout with only content -->
-<main class="p-6">
+<NavMenu OnLoginClicked="ShowLogin" OnRegisterClicked="ShowRegister" />
+
+<div class="container d-flex justify-content-center align-items-center" style="height: calc(100vh - 56px);">
     @Body
-</main>
+</div>
+
+<LoginModal @ref="LoginModal" />
+<RegisterModal @ref="RegisterModal" />
+
+@code {
+    private LoginModal? LoginModal;
+    private RegisterModal? RegisterModal;
+
+    private void ShowLogin() => LoginModal?.Show();
+    private void ShowRegister() => RegisterModal?.Show();
+}

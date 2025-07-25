@@ -1,0 +1,33 @@
+﻿<div class="modal fade @(IsVisible ? "show d-block" : "")" tabindex="-1"
+     style="background-color: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Register</h5>
+                <button type="button" class="btn-close" @onclick="Hide" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Register form placeholder</p>
+                <!-- Replace the above with your actual registration form -->
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool IsVisible = false;
+    public void Show()
+    {
+        IsVisible = true;
+        StateHasChanged();  
+    }
+
+    public void Hide()
+    {
+        IsVisible = false;
+        StateHasChanged();  
+}
+}
