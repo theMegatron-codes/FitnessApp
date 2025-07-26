@@ -36,6 +36,16 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 
 builder.Services.AddAuthorization();
 
@@ -45,9 +55,9 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Middleware order
-app.UseRouting();
 
+app.UseRouting();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,33 +1,64 @@
-﻿<div class="modal fade @(IsVisible ? "show d-block" : "")" tabindex="-1"
-     style="background-color: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+﻿
+@if (_visible)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title">Register</h5>
+                    <button type="button" class="btn-close" @onclick="Hide"></button>
+                </div>
 
-            <div class="modal-header">
-                <h5 class="modal-title">Register</h5>
-                <button type="button" class="btn-close" @onclick="Hide" aria-label="Close"></button>
+                <div class="modal-body">
+                    <input class="form-control mb-2" placeholder="Username" @bind="register.Username" />
+                    <input class="form-control mb-2" placeholder="Email" @bind="register.Email" />
+                    <input class="form-control mb-2" placeholder="Password" @bind="register.Password" type="password" />
+                    <button class="btn btn-primary w-100" @onclick="RegisterUser">Sign Up</button>
+                </div>
             </div>
-
-            <div class="modal-body">
-                <p>Register form placeholder</p>
-                <!-- Replace the above with your actual registration form -->
-            </div>
-
         </div>
     </div>
-</div>
+}
 
 @code {
-    private bool IsVisible = false;
+    private bool _visible = false;
+
     public void Show()
     {
-        IsVisible = true;
-        StateHasChanged();  
+        _visible = true;
+        StateHasChanged();
     }
 
     public void Hide()
     {
-        IsVisible = false;
-        StateHasChanged();  
-}
+        _visible = false;
+        StateHasChanged();
+    }
+
+    private RegisterModel register = new();
+
+    public class RegisterModel
+    {
+        public string Username { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
+    [Inject] HttpClient Http { get; set; } = default!;
+
+    private async Task RegisterUser()
+    {
+        var response = await Http.PostAsJsonAsync("api/Auth/register", register);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("User registered!");
+            Hide();
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Error: {error}");
+        }
+    }
 }
