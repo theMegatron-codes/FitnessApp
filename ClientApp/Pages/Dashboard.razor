@@ -1,0 +1,32 @@
+﻿@page "/DashBoard"
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthProvider
+
+<AuthorizeView>
+    <Authorized>
+        <h1>Welcome to your Dashboard, @username!</h1>
+        <p>You are now logged in and can access this secure section.</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>You are not authorized to view this page. Redirecting to login...</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string username = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity != null && user.Identity.IsAuthenticated)
+        {
+            username = user.Identity.Name!;
+        }
+        else
+       {
+            Navigation.NavigateTo("/");
+        }
+    }
+}
