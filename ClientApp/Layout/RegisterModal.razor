@@ -14,6 +14,10 @@
                     <input class="form-control mb-2" placeholder="Email" @bind="register.Email" />
                     <input class="form-control mb-2" placeholder="Password" @bind="register.Password" type="password" />
                     <button class="btn btn-primary w-100" @onclick="RegisterUser">Sign Up</button>
+                    @if (!string.IsNullOrEmpty(registerMessage))
+                    {
+                    <div class="@registerMessageClass mt-2">@registerMessage</div>
+                    }
                 </div>
             </div>
         </div>
@@ -36,12 +40,16 @@
     }
 
     private RegisterModel register = new();
+    private string? registerMessage;
+    private string registerMessageClass = "";
 
     public class RegisterModel
     {
         public string Username { get; set; } = "";
         public string Email { get; set; } = "";
         public string Password { get; set; } = "";
+       
+
     }
 
     [Inject] HttpClient Http { get; set; } = default!;
@@ -52,13 +60,18 @@
 
         if (response.IsSuccessStatusCode)
         {
-            Console.WriteLine("User registered!");
+            registerMessage = "✅ Registered successfully!";
+            registerMessageClass = "text-success";
+            StateHasChanged();
+            await Task.Delay(3000);
             Hide();
         }
         else
         {
             var error = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"Error: {error}");
+            registerMessage = $"❌ Registration failed: {error}";
+            registerMessageClass = "text-danger";
         }
     }
 }
